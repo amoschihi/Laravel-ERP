@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.2
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 24, 2018 at 11:00 PM
--- Server version: 10.1.34-MariaDB
--- PHP Version: 7.2.7
+-- Generation Time: Oct 30, 2020 at 12:31 PM
+-- Server version: 10.4.14-MariaDB
+-- PHP Version: 7.4.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `lincoln`
+-- Database: `4s`
 --
 
 -- --------------------------------------------------------
@@ -67,8 +66,8 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`id`, `name`, `username`, `picturefile`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Amos', 'Amos', '31599_2018-07-13_1531492486.jpg', 'amoschihi@gmail.com', '$2y$10$Ix5YVhRuLg0MJvLc5o9kbutDdV/MaKqJweV6GQqAQsX1OXig0Dh7a', 'HPlAEP7oix', NULL, '2018-07-13 11:34:48'),
-(2, 'Code Doctor', 'Codedoctor', '58272_2018-07-13_1531494172.jpg', 'amoschihi@yahoo.com', '$2y$10$RYHg6A7FSuuUw1OHx2XxLe8YI2QzrpfhPkUTOfkKyeckyc.U20RLu', 'mH0TAK2QA5', NULL, '2018-07-13 12:02:52');
+(1, 'Amos', 'Amos', '31599_2018-07-13_1531492486.jpg', 'amoschihi@gmail.com', '$2y$10$jdJmiOZCdQ8zLUWumflhX.P05QuPQBstEeTQr5wG1t/8bFttlfiI2', 'HPlAEP7oix', NULL, '2020-10-17 05:33:03'),
+(2, 'Chihi', 'Codedoctor', '58272_2018-07-13_1531494172.jpg', 'appschihi@gmail.com', '$2y$10$FbHPrklaverfWYmA0z.x0uKAxLpA3l.pO3yg//gu8kbYG4N/6u8QK', 'GidoOBkADGGf3L46mFy1Dcf0vrA1DIZW9Rl7v1PtqzfXRqX3j3QFx79nI6m7', NULL, '2020-10-28 11:07:56');
 
 -- --------------------------------------------------------
 
@@ -88,7 +87,8 @@ CREATE TABLE `admin_roles` (
 
 INSERT INTO `admin_roles` (`id`, `role_id`, `admin_id`) VALUES
 (1, 1, 1),
-(2, 2, 2);
+(3, 4, 2),
+(4, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -162,7 +162,7 @@ CREATE TABLE `comments` (
   `comment_id` int(10) UNSIGNED NOT NULL,
   `subject` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `body` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '0',
+  `status` tinyint(1) NOT NULL DEFAULT 0,
   `user_id` int(10) UNSIGNED DEFAULT NULL,
   `admin_id` int(10) UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -289,7 +289,10 @@ CREATE TABLE `fee_finance_details` (
 --
 
 INSERT INTO `fee_finance_details` (`id`, `fee_id`, `student_id`, `level_id`, `mode_id`, `fee_paydate`, `fee_description`, `fee_detail`, `fee_amount`, `updated_by`, `created_at`, `updated_at`) VALUES
-(1, NULL, NULL, 1, 1, '09/04/2018', 'sem 1 fees', 'Tuition', 14650.00, 'Code Doctor', '2018-07-20 19:11:00', '2018-07-20 19:11:00');
+(1, NULL, NULL, 1, 1, '09/04/2018', 'sem 1 fees', 'Tuition', 14650.00, 'Code Doctor', '2018-07-20 19:11:00', '2018-07-20 19:11:00'),
+(2, NULL, NULL, 4, 1, '10/28/2020', 'tuition', 'tuition', 12000.00, 'Code Doctor', '2020-10-28 09:59:23', '2020-10-28 09:59:23'),
+(3, NULL, NULL, 4, 1, '10/28/2020', 'tuition', 'tuition', 12000.00, 'Code Doctor', '2020-10-28 10:03:02', '2020-10-28 10:03:02'),
+(4, NULL, NULL, 1, 1, '10/28/2020', 'tuition', 'tuition', 12000.00, 'Code Doctor', '2020-10-28 10:10:06', '2020-10-28 10:10:06');
 
 -- --------------------------------------------------------
 
@@ -1122,13 +1125,16 @@ INSERT INTO `levels` (`level_id`, `year_id`, `semester_id`, `level_name`, `level
 CREATE TABLE `marks` (
   `id` int(10) UNSIGNED NOT NULL,
   `student_id` int(10) UNSIGNED NOT NULL,
-  `rep_status` tinyint(1) NOT NULL DEFAULT '0',
+  `rep_status` tinyint(1) NOT NULL DEFAULT 0,
   `unit_id` int(10) UNSIGNED NOT NULL,
   `academic_id` int(10) UNSIGNED NOT NULL,
   `level_id` int(10) UNSIGNED NOT NULL,
-  `m_assignment` int(10) UNSIGNED NOT NULL,
-  `m_cat` int(10) UNSIGNED NOT NULL,
-  `m_exam` int(10) UNSIGNED NOT NULL,
+  `m_assignment` int(10) UNSIGNED DEFAULT NULL,
+  `m_assignmentmissing` tinyint(1) NOT NULL,
+  `m_cat` int(10) UNSIGNED DEFAULT NULL,
+  `m_catmissing` tinyint(1) NOT NULL,
+  `m_exam` int(10) UNSIGNED DEFAULT NULL,
+  `m_exammissing` tinyint(1) NOT NULL,
   `m_total_marks` int(10) UNSIGNED NOT NULL,
   `m_grade` char(1) COLLATE utf8mb4_unicode_ci NOT NULL,
   `m_gp` int(10) UNSIGNED NOT NULL,
@@ -1142,41 +1148,49 @@ CREATE TABLE `marks` (
 -- Dumping data for table `marks`
 --
 
-INSERT INTO `marks` (`id`, `student_id`, `rep_status`, `unit_id`, `academic_id`, `level_id`, `m_assignment`, `m_cat`, `m_exam`, `m_total_marks`, `m_grade`, `m_gp`, `m_term_hours`, `updated_by`, `created_at`, `updated_at`) VALUES
-(1, 7, 0, 1, 1, 1, 25, 10, 45, 63, 'B', 4, NULL, NULL, '2018-07-20 18:53:31', '2018-07-20 18:53:31'),
-(2, 7, 0, 2, 1, 1, 15, 19, 51, 68, 'B', 4, NULL, NULL, '2018-07-20 18:54:13', '2018-07-20 18:54:13'),
-(4, 7, 0, 3, 1, 1, 16, 20, 41, 59, 'C', 3, NULL, NULL, '2018-07-20 18:56:42', '2018-07-20 18:56:42'),
-(5, 7, 0, 4, 1, 1, 14, 28, 40, 61, 'B', 4, NULL, NULL, '2018-07-20 18:57:12', '2018-07-20 18:57:12'),
-(7, 7, 0, 5, 1, 1, 24, 20, 48, 70, 'A', 5, NULL, NULL, '2018-07-20 18:58:23', '2018-07-20 18:58:23'),
-(8, 7, 0, 6, 1, 1, 18, 24, 56, 77, 'A', 5, NULL, NULL, '2018-07-20 18:58:57', '2018-07-20 18:58:57'),
-(9, 7, 0, 7, 1, 1, 15, 21, 43, 61, 'B', 4, NULL, NULL, '2018-07-20 18:59:36', '2018-07-20 18:59:36'),
-(10, 1, 0, 1, 1, 1, 10, 15, 47, 60, 'B', 4, NULL, NULL, '2018-07-21 16:18:10', '2018-07-21 16:18:10'),
-(11, 1, 0, 2, 1, 1, 10, 21, 50, 66, 'B', 4, NULL, NULL, '2018-07-21 16:39:52', '2018-07-21 16:39:52'),
-(12, 1, 0, 3, 1, 1, 20, 14, 43, 60, 'B', 4, NULL, NULL, '2018-07-21 16:43:39', '2018-07-21 16:43:39'),
-(13, 1, 0, 4, 1, 1, 20, 29, 50, 75, 'A', 5, NULL, NULL, '2018-07-21 16:46:44', '2018-07-21 16:46:44'),
-(14, 1, 0, 5, 1, 1, 10, 18, 38, 52, 'C', 3, NULL, NULL, '2018-07-21 16:47:56', '2018-07-21 16:47:56'),
-(15, 1, 0, 6, 1, 1, 20, 15, 36, 54, 'C', 3, NULL, NULL, '2018-07-21 16:51:55', '2018-07-21 16:51:55'),
-(16, 1, 0, 7, 1, 1, 14, 18, 49, 65, 'B', 4, NULL, NULL, '2018-07-21 16:52:53', '2018-07-21 16:52:53'),
-(17, 6, 0, 1, 1, 1, 10, 25, 44, 62, 'B', 4, NULL, NULL, '2018-07-21 16:57:26', '2018-07-21 16:57:26'),
-(18, 6, 0, 2, 1, 1, 25, 21, 54, 77, 'A', 5, NULL, NULL, '2018-07-21 16:58:23', '2018-07-21 16:58:23'),
-(19, 6, 0, 3, 1, 1, 24, 21, 51, 74, 'A', 5, NULL, NULL, '2018-07-21 17:01:21', '2018-07-21 17:01:21'),
-(20, 6, 0, 4, 1, 1, 23, 24, 50, 74, 'A', 5, NULL, NULL, '2018-07-21 17:02:12', '2018-07-21 17:02:12'),
-(21, 6, 0, 5, 1, 1, 24, 20, 44, 66, 'B', 4, NULL, NULL, '2018-07-21 17:04:00', '2018-07-21 17:04:00'),
-(22, 6, 0, 6, 1, 1, 23, 20, 45, 67, 'B', 4, NULL, NULL, '2018-07-21 17:05:36', '2018-07-21 17:05:36'),
-(23, 6, 0, 7, 1, 1, 23, 24, 48, 72, 'A', 5, NULL, NULL, '2018-07-21 17:07:17', '2018-07-21 17:07:17'),
-(24, 1, 0, 8, 1, 2, 18, 25, 57, 79, 'A', 5, NULL, NULL, '2018-07-23 13:53:52', '2018-07-23 13:53:52'),
-(25, 1, 0, 9, 1, 2, 10, 22, 40, 56, 'C', 3, NULL, NULL, '2018-07-23 13:54:14', '2018-07-23 13:54:14'),
-(26, 1, 0, 10, 1, 2, 28, 17, 43, 66, 'B', 4, NULL, NULL, '2018-07-23 13:54:51', '2018-07-23 13:54:51'),
-(27, 1, 0, 11, 1, 2, 23, 24, 49, 73, 'A', 5, NULL, NULL, '2018-07-23 13:55:09', '2018-07-23 13:55:09'),
-(28, 1, 0, 12, 1, 2, 21, 10, 35, 51, 'C', 3, NULL, NULL, '2018-07-23 13:55:23', '2018-07-23 13:55:23'),
-(29, 1, 0, 13, 1, 2, 12, 21, 40, 57, 'C', 3, NULL, NULL, '2018-07-23 13:55:37', '2018-07-23 13:55:37'),
-(30, 1, 0, 14, 2, 3, 13, 20, 60, 77, 'A', 5, NULL, NULL, '2018-07-24 14:40:50', '2018-07-24 14:40:50'),
-(31, 1, 0, 15, 2, 3, 14, 22, 34, 52, 'C', 3, NULL, NULL, '2018-07-24 14:41:48', '2018-07-24 14:41:48'),
-(32, 1, 0, 16, 2, 3, 18, 26, 45, 67, 'B', 4, NULL, NULL, '2018-07-24 14:42:07', '2018-07-24 14:42:07'),
-(33, 1, 0, 17, 2, 3, 20, 15, 21, 39, 'F', 1, NULL, NULL, '2018-07-24 14:42:23', '2018-07-24 14:42:23'),
-(34, 1, 0, 18, 2, 3, 16, 20, 44, 62, 'B', 4, NULL, NULL, '2018-07-24 14:42:55', '2018-07-24 14:42:55'),
-(35, 1, 0, 19, 2, 3, 30, 30, 61, 91, 'A', 5, NULL, NULL, '2018-07-24 14:43:22', '2018-07-24 14:43:22'),
-(36, 1, 0, 20, 2, 3, 12, 15, 37, 50, 'C', 3, NULL, NULL, '2018-07-24 14:43:45', '2018-07-24 14:43:45');
+INSERT INTO `marks` (`id`, `student_id`, `rep_status`, `unit_id`, `academic_id`, `level_id`, `m_assignment`, `m_assignmentmissing`, `m_cat`, `m_catmissing`, `m_exam`, `m_exammissing`, `m_total_marks`, `m_grade`, `m_gp`, `m_term_hours`, `updated_by`, `created_at`, `updated_at`) VALUES
+(1, 7, 0, 1, 1, 1, 25, 0, 10, 0, 45, 0, 63, 'B', 4, NULL, NULL, '2018-07-20 18:53:31', '2018-07-20 18:53:31'),
+(2, 7, 0, 2, 1, 1, 15, 0, 19, 0, 51, 0, 68, 'B', 4, NULL, NULL, '2018-07-20 18:54:13', '2018-07-20 18:54:13'),
+(4, 7, 0, 3, 1, 1, 16, 0, 20, 0, 41, 0, 59, 'C', 3, NULL, NULL, '2018-07-20 18:56:42', '2018-07-20 18:56:42'),
+(5, 7, 0, 4, 1, 1, 14, 0, 28, 0, 40, 0, 61, 'B', 4, NULL, NULL, '2018-07-20 18:57:12', '2018-07-20 18:57:12'),
+(7, 7, 0, 5, 1, 1, 24, 0, 20, 0, 48, 0, 70, 'A', 5, NULL, NULL, '2018-07-20 18:58:23', '2018-07-20 18:58:23'),
+(8, 7, 0, 6, 1, 1, 18, 0, 24, 0, 56, 0, 77, 'A', 5, NULL, NULL, '2018-07-20 18:58:57', '2018-07-20 18:58:57'),
+(9, 7, 0, 7, 1, 1, 15, 0, 21, 0, 43, 0, 61, 'B', 4, NULL, NULL, '2018-07-20 18:59:36', '2018-07-20 18:59:36'),
+(10, 1, 0, 1, 1, 1, 10, 0, 15, 0, 47, 0, 60, 'B', 4, NULL, NULL, '2018-07-21 16:18:10', '2018-07-21 16:18:10'),
+(11, 1, 0, 2, 1, 1, 10, 0, 21, 0, 50, 0, 66, 'B', 4, NULL, NULL, '2018-07-21 16:39:52', '2018-07-21 16:39:52'),
+(12, 1, 0, 3, 1, 1, 20, 0, 14, 0, 43, 0, 60, 'B', 4, NULL, NULL, '2018-07-21 16:43:39', '2018-07-21 16:43:39'),
+(13, 1, 0, 4, 1, 1, 20, 0, 29, 0, 50, 0, 75, 'A', 5, NULL, NULL, '2018-07-21 16:46:44', '2018-07-21 16:46:44'),
+(14, 1, 0, 5, 1, 1, 10, 0, 18, 0, 38, 0, 52, 'C', 3, NULL, NULL, '2018-07-21 16:47:56', '2018-07-21 16:47:56'),
+(15, 1, 0, 6, 1, 1, 20, 0, 15, 0, 36, 0, 54, 'C', 3, NULL, NULL, '2018-07-21 16:51:55', '2018-07-21 16:51:55'),
+(16, 1, 0, 7, 1, 1, 14, 0, 18, 0, 49, 0, 65, 'B', 4, NULL, NULL, '2018-07-21 16:52:53', '2018-07-21 16:52:53'),
+(17, 6, 0, 1, 1, 1, 10, 0, 25, 0, 44, 0, 62, 'B', 4, NULL, NULL, '2018-07-21 16:57:26', '2018-07-21 16:57:26'),
+(18, 6, 0, 2, 1, 1, 25, 0, 21, 0, 54, 0, 77, 'A', 5, NULL, NULL, '2018-07-21 16:58:23', '2018-07-21 16:58:23'),
+(19, 6, 0, 3, 1, 1, 24, 0, 21, 0, 51, 0, 74, 'A', 5, NULL, NULL, '2018-07-21 17:01:21', '2018-07-21 17:01:21'),
+(20, 6, 0, 4, 1, 1, 23, 0, 24, 0, 50, 0, 74, 'A', 5, NULL, NULL, '2018-07-21 17:02:12', '2018-07-21 17:02:12'),
+(21, 6, 0, 5, 1, 1, 24, 0, 20, 0, 44, 0, 66, 'B', 4, NULL, NULL, '2018-07-21 17:04:00', '2018-07-21 17:04:00'),
+(22, 6, 0, 6, 1, 1, 23, 0, 20, 0, 45, 0, 67, 'B', 4, NULL, NULL, '2018-07-21 17:05:36', '2018-07-21 17:05:36'),
+(23, 6, 0, 7, 1, 1, 23, 0, 24, 0, 48, 0, 72, 'A', 5, NULL, NULL, '2018-07-21 17:07:17', '2018-07-21 17:07:17'),
+(24, 1, 0, 8, 1, 2, 18, 0, 25, 0, 57, 0, 79, 'A', 5, NULL, NULL, '2018-07-23 13:53:52', '2018-07-23 13:53:52'),
+(25, 1, 0, 9, 1, 2, 10, 0, 22, 0, 40, 0, 56, 'C', 3, NULL, NULL, '2018-07-23 13:54:14', '2018-07-23 13:54:14'),
+(26, 1, 0, 10, 1, 2, 28, 0, 17, 0, 43, 0, 66, 'B', 4, NULL, NULL, '2018-07-23 13:54:51', '2018-07-23 13:54:51'),
+(27, 1, 0, 11, 1, 2, 23, 0, 24, 0, 49, 0, 73, 'A', 5, NULL, NULL, '2018-07-23 13:55:09', '2018-07-23 13:55:09'),
+(28, 1, 0, 12, 1, 2, 21, 0, 10, 0, 35, 0, 51, 'C', 3, NULL, NULL, '2018-07-23 13:55:23', '2018-07-23 13:55:23'),
+(29, 1, 0, 13, 1, 2, 12, 0, 21, 0, 40, 0, 57, 'C', 3, NULL, NULL, '2018-07-23 13:55:37', '2018-07-23 13:55:37'),
+(30, 1, 0, 14, 2, 3, 13, 0, 20, 0, 60, 0, 77, 'A', 5, NULL, NULL, '2018-07-24 14:40:50', '2018-07-24 14:40:50'),
+(31, 1, 0, 15, 2, 3, 14, 0, 22, 0, 34, 0, 52, 'C', 3, NULL, NULL, '2018-07-24 14:41:48', '2018-07-24 14:41:48'),
+(32, 1, 0, 16, 2, 3, 18, 0, 26, 0, 45, 0, 67, 'B', 4, NULL, NULL, '2018-07-24 14:42:07', '2018-07-24 14:42:07'),
+(33, 1, 0, 17, 2, 3, 20, 0, 25, 0, 21, 0, 44, 'D', 2, NULL, NULL, '2018-07-24 14:42:23', '2020-10-21 06:20:52'),
+(34, 1, 0, 18, 2, 3, 16, 0, 20, 0, 44, 0, 62, 'B', 4, NULL, NULL, '2018-07-24 14:42:55', '2018-07-24 14:42:55'),
+(35, 1, 0, 19, 2, 3, 30, 0, 30, 0, 61, 0, 91, 'A', 5, NULL, NULL, '2018-07-24 14:43:22', '2018-07-24 14:43:22'),
+(36, 1, 0, 20, 2, 3, 12, 0, 15, 0, 37, 0, 50, 'C', 3, NULL, NULL, '2018-07-24 14:43:45', '2018-07-24 14:43:45'),
+(37, 1, 0, 22, 2, 4, 23, 1, 12, 0, 56, 0, 74, 'A', 5, NULL, NULL, '2020-10-17 11:11:16', '2020-10-21 06:18:16'),
+(38, 1, 0, 23, 2, 4, 12, 0, 13, 0, 45, 0, 58, 'C', 3, NULL, NULL, '2020-10-17 11:14:51', '2020-10-17 14:45:03'),
+(39, 1, 0, 24, 2, 4, 19, 0, 22, 0, 32, 0, 53, 'C', 3, NULL, NULL, '2020-10-17 11:45:21', '2020-10-21 06:19:05'),
+(40, 1, 0, 25, 2, 4, 24, 0, 23, 0, 53, 0, 77, 'A', 5, NULL, NULL, '2020-10-17 11:45:55', '2020-10-17 14:45:03'),
+(41, 1, 0, 26, 2, 4, NULL, 0, NULL, 0, 33, 0, 0, '*', 0, NULL, NULL, '2020-10-17 11:47:26', '2020-10-21 06:28:47'),
+(42, 1, 0, 27, 2, 4, 12, 0, 23, 0, 44, 0, 62, 'B', 4, NULL, NULL, '2020-10-17 11:48:01', '2020-10-17 14:45:04'),
+(43, 1, 0, 28, 2, 4, 21, 0, 22, 0, 44, 0, 66, 'B', 4, NULL, NULL, '2020-10-17 11:48:16', '2020-10-17 14:45:04'),
+(44, 1, 0, 29, 2, 4, 12, 0, 24, 0, 43, 0, 61, 'B', 4, NULL, NULL, '2020-10-17 11:48:46', '2020-10-17 14:45:04');
 
 -- --------------------------------------------------------
 
@@ -1197,11 +1211,17 @@ CREATE TABLE `menus` (
 --
 
 INSERT INTO `menus` (`id`, `menu_name`, `icon_id`, `position`, `visible`) VALUES
-(1, 'Browse Categories', 544, 1, 1),
-(2, 'User Options', 507, 3, 1),
+(1, 'Browse Categories', 544, 3, 1),
+(2, 'User Options', 507, 5, 1),
 (3, 'Control Panel', 298, 1, 1),
 (4, 'Version', 506, 2, 1),
-(5, 'Reports', 263, 2, 1);
+(5, 'Reports', 263, 4, 1),
+(6, 'Fees', 446, 8, 1),
+(7, 'Notice Board', 453, 6, 1),
+(8, 'Registration Info', 520, 7, 1),
+(9, 'Academics', 321, 10, 1),
+(10, 'Exams', 477, 9, 1),
+(11, 'Finance', 446, 11, 1);
 
 -- --------------------------------------------------------
 
@@ -1224,7 +1244,13 @@ INSERT INTO `menu_roles` (`id`, `role_id`, `menu_id`) VALUES
 (2, 1, 4),
 (3, 2, 1),
 (4, 2, 2),
-(5, 2, 5);
+(5, 2, 5),
+(6, 3, 6),
+(7, 3, 7),
+(8, 3, 8),
+(9, 3, 9),
+(10, 3, 10),
+(11, 4, 11);
 
 -- --------------------------------------------------------
 
@@ -1385,6 +1411,13 @@ CREATE TABLE `payments` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `payments`
+--
+
+INSERT INTO `payments` (`payment_id`, `student_id`, `level_id`, `fee_finance_detail_id`, `payment_date`, `payment_amount`, `amount_due`, `remark`, `description`, `created_at`, `updated_at`) VALUES
+(1, 2, 1, 1, '2020-10-28 13:10:20 PM', 12000.00, 2650.00, NULL, NULL, '2020-10-28 10:11:10', '2020-10-28 10:11:10');
+
 -- --------------------------------------------------------
 
 --
@@ -1418,7 +1451,8 @@ INSERT INTO `programs` (`program_id`, `academic_id`, `level_id`, `course_id`, `a
 (8, 2, 3, 3, 1, '2019-09-09', '2019-12-20', '2018-07-21 21:11:09', '2018-07-21 21:11:09'),
 (9, 2, 4, 2, 1, '2020-01-08', '2020-04-17', '2018-07-21 21:13:42', '2018-07-21 21:13:42'),
 (10, 2, 3, 1, 1, '2020-05-12', '2020-08-28', '2018-07-21 21:20:30', '2018-07-21 21:20:30'),
-(11, 2, 4, 3, 1, '2020-01-07', '2020-04-24', '2018-07-21 21:24:19', '2018-07-21 21:24:19');
+(11, 2, 4, 3, 1, '2020-01-07', '2020-04-24', '2018-07-21 21:24:19', '2018-07-21 21:24:19'),
+(12, 2, 4, 1, 1, '2020-09-08', '2020-12-18', '2020-10-17 10:10:02', '2020-10-17 11:55:35');
 
 -- --------------------------------------------------------
 
@@ -1430,6 +1464,14 @@ CREATE TABLE `receipts` (
   `id` int(10) UNSIGNED NOT NULL,
   `receipt_id` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `receipts`
+--
+
+INSERT INTO `receipts` (`id`, `receipt_id`) VALUES
+(1, 1),
+(2, 2);
 
 -- --------------------------------------------------------
 
@@ -1445,6 +1487,14 @@ CREATE TABLE `receipt_details` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `receipt_details`
+--
+
+INSERT INTO `receipt_details` (`id`, `receipt_id`, `student_id`, `transaction_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 2, 1, '2020-10-28 10:11:10', '2020-10-28 10:11:10'),
+(2, 2, 2, 2, '2020-10-28 10:11:54', '2020-10-28 10:11:54');
 
 -- --------------------------------------------------------
 
@@ -1463,7 +1513,9 @@ CREATE TABLE `roles` (
 
 INSERT INTO `roles` (`id`, `name`) VALUES
 (1, 'admin'),
-(2, 'instructor');
+(2, 'instructor'),
+(3, 'student'),
+(4, 'finance');
 
 -- --------------------------------------------------------
 
@@ -1532,7 +1584,7 @@ CREATE TABLE `settings` (
 --
 
 INSERT INTO `settings` (`id`, `appname`, `content`, `favicon`, `notifications`, `logo`, `created_at`, `updated_at`) VALUES
-(1, 'Lincoln Schools', '', 'FLbHd2oOTW8UBAEFXGb41Pa2a4jYKH0YudffNtaZ.jpeg', 1, '57RaseTp8FNqYYmEk17YKDjIKORKUzZSS3zj2eNc.jpeg', '2018-07-13 11:24:48', '2018-07-13 11:41:11');
+(1, 'STUDENT SELF SERVICE SYSTEM', '', 'LoQoKDEtYhyRlG6uDZ8uo9yyRwy0j7HTdCsZ8koa.png', 1, 'LoQoKDEtYhyRlG6uDZ8uo9yyRwy0j7HTdCsZ8koa.png', '2018-07-13 11:24:48', '2020-10-20 18:27:32');
 
 -- --------------------------------------------------------
 
@@ -1578,7 +1630,7 @@ CREATE TABLE `statuses` (
 --
 
 INSERT INTO `statuses` (`status_id`, `student_id`, `program_id`, `created_at`, `updated_at`) VALUES
-(1, 1, 10, '2018-07-14 19:57:49', '2018-07-24 14:02:56'),
+(1, 1, 12, '2018-07-14 19:57:49', '2020-10-17 10:10:42'),
 (2, 2, 3, '2018-07-14 20:14:36', '2018-07-20 19:19:42'),
 (3, 3, 1, '2018-07-17 01:54:15', '2018-07-17 01:54:15'),
 (4, 6, 1, '2018-07-17 01:56:26', '2018-07-17 01:56:26'),
@@ -1604,7 +1656,7 @@ CREATE TABLE `students` (
   `s_denomination` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `s_admdate` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `s_graddate` date DEFAULT NULL,
-  `s_homeaddress` text COLLATE utf8mb4_unicode_ci,
+  `s_homeaddress` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `s_district` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `s_area` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `s_country` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1612,12 +1664,12 @@ CREATE TABLE `students` (
   `parent_id` int(10) UNSIGNED NOT NULL,
   `agent_id` int(10) UNSIGNED DEFAULT NULL,
   `user_id` int(10) UNSIGNED NOT NULL,
-  `s_approved` tinyint(1) NOT NULL DEFAULT '0',
-  `is_classrep` tinyint(1) NOT NULL DEFAULT '0',
+  `s_approved` tinyint(1) NOT NULL DEFAULT 0,
+  `is_classrep` tinyint(1) NOT NULL DEFAULT 0,
   `s_emailaddress` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `s_applicationno` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `date_applied` datetime NOT NULL,
-  `remarks` text COLLATE utf8mb4_unicode_ci,
+  `remarks` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -1628,7 +1680,7 @@ CREATE TABLE `students` (
 --
 
 INSERT INTO `students` (`student_id`, `s_othernames`, `s_surname`, `s_gender`, `s_contacts`, `s_dob`, `s_nationalid`, `s_denomination`, `s_admdate`, `s_graddate`, `s_homeaddress`, `s_district`, `s_area`, `s_country`, `s_photo`, `parent_id`, `agent_id`, `user_id`, `s_approved`, `is_classrep`, `s_emailaddress`, `s_applicationno`, `date_applied`, `remarks`, `deleted_at`, `created_at`, `updated_at`) VALUES
-(1, 'Amos Kuria', 'Chihi', 'M', '0725044135', '1995-01-24', 32520054, 'Christian', '21-07-2018 00:39:01', '2022-06-21', 'Kiambu', 'Gatundu', NULL, 'Kenya', '60728_2018-07-14_1531609069.jpg', 3, NULL, 2, 1, 0, 'amoschihi@gmail.com', 'BS02/038/2018', '2018-07-14 22:54:45', 'Approved.', NULL, '2018-07-14 19:57:49', '2018-07-20 18:39:53'),
+(1, 'Amos Kuria', 'Chihi', 'M', '0725044135', '1995-01-24', 32520054, 'Christian', '21-07-2018 00:39:01', '2022-06-21', 'Kiambu', 'Gatundu', NULL, 'Kenya', '82387_2020-10-28_1603889785.jpg', 3, NULL, 2, 1, 0, 'amoschihi@gmail.com', 'BS02/038/2018', '2018-07-14 22:54:45', 'Approved.', NULL, '2018-07-14 19:57:49', '2020-10-28 09:56:27'),
 (2, 'Francis Ng\'ang\'a', 'Kamau', 'M', '0724897696', '2018-07-03', 32510447, 'Muslim', '20-07-2018 22:15:11', '2022-06-20', 'Juja', 'Juja', NULL, 'Kenya', NULL, 4, NULL, 2, 1, 0, 'Fnganga204@gmail.com', 'BS01/204/2018', '2018-07-14 23:05:01', 'Approved.', NULL, '2018-07-14 20:14:36', '2018-07-20 16:15:17'),
 (3, 'Joseph Ndung\'u', 'Mumbi', 'M', '0701386318', '2018-07-03', 29851265, 'Muslim', NULL, NULL, 'Ruiru', 'Gatundu', NULL, 'Kenya', NULL, 5, NULL, 2, 0, 0, 'josephmajoez@gmail.com', '6ZQK', '2018-07-11 16:30:26', NULL, NULL, '2018-07-17 01:54:15', '2018-07-20 19:32:26'),
 (4, 'Kelly Nthenya', 'Mutua', 'F', '0726565225', '2018-07-11', 33513584, 'Christian', NULL, NULL, 'Machakos', 'Machakos', NULL, 'Kenya', NULL, 6, NULL, 2, 0, 0, 'kelmutua@gmail.com', 'ETUT', '2018-07-11 16:47:59', NULL, NULL, '2018-07-17 01:55:27', '2018-07-20 19:32:26'),
@@ -1659,21 +1711,32 @@ CREATE TABLE `submenus` (
 
 INSERT INTO `submenus` (`id`, `menu_id`, `icon_id`, `menu_name`, `link`, `position`, `visible`) VALUES
 (1, 3, 451, 'Menu Management', 'admin/menu_management', 1, 1),
-(2, 1, 324, 'Applicants/Admissions', 'admin/applicants', 1, 1),
-(3, 1, 321, 'Classes', 'admin/academics', 3, 1),
-(4, 1, 704, 'Student Base', 'admin/students', 2, 1),
-(5, 4, 297, 'Settings', 'admin/settings', 2, 1),
-(6, 1, 97, 'Marketers/Agents', 'admin/agents', 4, 1),
-(7, 1, 446, 'Fees Management', 'admin/fees_management', 5, 1),
-(8, 3, 406, 'Roles/Privileges', 'admin/roles_privileges', 2, 1),
-(9, 2, 381, 'Change Password', 'admin/change_password', 1, 1),
-(10, 4, 381, 'Change Password', 'admin/change_password', 1, 1),
-(11, 2, 177, 'Comments', 'admin/comments', 2, 1),
-(12, 2, 505, 'About', 'admin/about', 3, 1),
-(13, 4, 505, 'About', 'admin/about', 3, 1),
-(14, 5, 262, 'Students List', 'admin/students_list', 1, 1),
-(15, 5, 204, 'Fees Report', 'admin/fees_report', 2, 1),
-(16, 4, 220, 'Messaging', 'admin/messaging', 4, 0);
+(2, 1, 324, 'Applicants/Admissions', 'admin/applicants', 8, 1),
+(3, 1, 321, 'Classes', 'admin/academics', 10, 1),
+(4, 1, 704, 'Student Base', 'admin/students', 9, 1),
+(5, 4, 297, 'Settings', 'admin/settings', 4, 1),
+(6, 1, 97, 'Marketers/Agents', 'admin/agents', 11, 1),
+(7, 11, 446, 'Fees Management', 'admin/fees_management', 27, 1),
+(8, 3, 406, 'Roles/Privileges', 'admin/roles_privileges', 3, 1),
+(9, 2, 381, 'Change Password', 'admin/change_password', 14, 1),
+(10, 4, 381, 'Change Password', 'admin/change_password', 5, 1),
+(11, 2, 177, 'Comments', 'admin/comments', 15, 1),
+(12, 2, 505, 'About', 'admin/about', 16, 1),
+(13, 4, 505, 'About', 'admin/about', 6, 1),
+(14, 5, 262, 'Students List', 'admin/students_list', 12, 1),
+(15, 5, 204, 'Fees Report', 'admin/fees_report', 13, 1),
+(16, 4, 220, 'Messaging', 'admin/messaging', 7, 0),
+(17, 3, 707, 'User Management', 'admin/user_management', 2, 1),
+(18, 7, 453, 'News', 'news', 17, 1),
+(19, 8, 239, 'Main Details', 'main_details', 18, 1),
+(20, 8, 396, 'Other Details', 'other_details', 19, 1),
+(21, 9, 263, 'Unit Registration', 'unit_registration', 25, 1),
+(22, 9, 583, 'Programmes', 'programmes', 26, 1),
+(23, 10, 27, 'Exam Results', 'exam_results', 23, 1),
+(24, 10, 259, 'Transcripts', 'transcripts', 24, 1),
+(25, 6, 446, 'Fees Structure', 'fees_structure', 20, 1),
+(26, 6, 263, 'Fees Status', 'fees_status', 21, 1),
+(27, 6, 1, 'Receipts', 'receipts', 22, 1);
 
 -- --------------------------------------------------------
 
@@ -1708,6 +1771,14 @@ CREATE TABLE `transactions` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `transactions`
+--
+
+INSERT INTO `transactions` (`transaction_id`, `transaction_date`, `payment_id`, `user_id`, `student_id`, `fee_finance_detail_id`, `amount_paid`, `remark`, `description`, `created_at`, `updated_at`) VALUES
+(1, '2020-10-28 13:10:20', 1, 2, 2, 1, '12000', NULL, NULL, '2020-10-28 10:11:10', '2020-10-28 10:11:10'),
+(2, '2020-10-28 13:11:11', 1, 2, 2, 1, '2650', NULL, NULL, '2020-10-28 10:11:54', '2020-10-28 10:11:54');
 
 -- --------------------------------------------------------
 
@@ -1751,7 +1822,16 @@ INSERT INTO `units` (`unit_id`, `course_id`, `level_id`, `unit_code`, `unit_name
 (17, 1, 3, 'COM 215', 'Electric circuits', 3, NULL, '2018-07-24 14:33:57', '2018-07-24 14:33:57'),
 (18, 1, 3, 'COM 212', 'Digital electronics I', 4, NULL, '2018-07-24 14:34:37', '2018-07-24 14:34:37'),
 (19, 1, 3, 'COM 216', 'Internet fundamentals', 3, NULL, '2018-07-24 14:35:03', '2018-07-24 14:35:03'),
-(20, 1, 3, 'IRD 104', 'Quantitative skills II', 3, NULL, '2018-07-24 14:35:37', '2018-07-24 14:35:37');
+(20, 1, 3, 'IRD 104', 'Quantitative skills II', 3, NULL, '2018-07-24 14:35:37', '2018-07-24 14:35:37'),
+(21, 1, 2, 'IRD 104', 'Quantitative Skills II', 3, 'IRD 104', '2020-10-17 05:54:03', '2020-10-17 05:54:03'),
+(22, 1, 4, 'COM 220', 'SOFTWARE ENGINEERING I', 3, 'COM 220', '2020-10-17 05:55:26', '2020-10-17 05:55:26'),
+(23, 1, 4, 'COM 221', 'COMPUTER ORGANIZATION', 3, NULL, '2020-10-17 05:55:53', '2020-10-17 05:55:53'),
+(24, 1, 4, 'COM 222', 'INTERNET APPLICATIONS', 3, NULL, '2020-10-17 05:56:12', '2020-10-17 05:56:12'),
+(25, 1, 4, 'COM 223', 'OPERATION SYSTEMS & NETWORKS', 3, NULL, '2020-10-17 05:56:33', '2020-10-17 05:56:33'),
+(26, 1, 4, 'COM 224', 'DATA STRUCTURES', 3, NULL, '2020-10-17 05:56:47', '2020-10-17 05:56:47'),
+(27, 1, 4, 'MAT 210', 'BASIC CALCULUS II', 3, NULL, '2020-10-17 05:57:26', '2020-10-17 05:57:26'),
+(28, 1, 4, 'PHY 210', 'ELECTRICITY & MAGNETISM', 3, NULL, '2020-10-17 05:57:55', '2020-10-17 05:57:55'),
+(29, 1, 4, 'STA 205', 'PROBABILITY & STATISTICS', 3, NULL, '2020-10-17 05:58:24', '2020-10-17 05:58:24');
 
 -- --------------------------------------------------------
 
@@ -1814,7 +1894,15 @@ INSERT INTO `unit_registereds` (`id`, `student_id`, `unit_id`, `academic_id`, `l
 (32, 1, 17, 2, NULL, NULL, 3, 1, 1, NULL, NULL, NULL, '2018-07-24 14:42:23', '2018-07-24 14:42:23'),
 (33, 1, 18, 2, NULL, NULL, 3, 1, 1, NULL, NULL, NULL, '2018-07-24 14:42:55', '2018-07-24 14:42:55'),
 (34, 1, 19, 2, NULL, NULL, 3, 1, 1, NULL, NULL, NULL, '2018-07-24 14:43:22', '2018-07-24 14:43:22'),
-(35, 1, 20, 2, NULL, NULL, 3, 1, 1, NULL, NULL, NULL, '2018-07-24 14:43:45', '2018-07-24 14:43:45');
+(35, 1, 20, 2, NULL, NULL, 3, 1, 1, NULL, NULL, NULL, '2018-07-24 14:43:45', '2018-07-24 14:43:45'),
+(36, 1, 22, 3, NULL, NULL, 4, 1, 1, NULL, NULL, NULL, '2020-10-17 11:11:16', '2020-10-17 11:11:16'),
+(37, 1, 23, 3, NULL, NULL, 4, 1, 1, NULL, NULL, NULL, '2020-10-17 11:14:51', '2020-10-17 11:14:51'),
+(38, 1, 24, 3, NULL, NULL, 4, 1, 1, NULL, NULL, NULL, '2020-10-17 11:45:21', '2020-10-17 11:45:21'),
+(39, 1, 25, 3, NULL, NULL, 4, 1, 1, NULL, NULL, NULL, '2020-10-17 11:45:55', '2020-10-17 11:45:55'),
+(40, 1, 26, 3, NULL, NULL, 4, 1, 1, NULL, NULL, NULL, '2020-10-17 11:47:26', '2020-10-17 11:47:26'),
+(41, 1, 27, 3, NULL, NULL, 4, 1, 1, NULL, NULL, NULL, '2020-10-17 11:48:01', '2020-10-17 11:48:01'),
+(42, 1, 28, 3, NULL, NULL, 4, 1, 1, NULL, NULL, NULL, '2020-10-17 11:48:16', '2020-10-17 11:48:16'),
+(43, 1, 29, 3, NULL, NULL, 4, 1, 1, NULL, NULL, NULL, '2020-10-17 11:48:47', '2020-10-17 11:48:47');
 
 -- --------------------------------------------------------
 
@@ -1825,7 +1913,7 @@ INSERT INTO `unit_registereds` (`id`, `student_id`, `unit_id`, `academic_id`, `l
 CREATE TABLE `users` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '0',
+  `status` tinyint(1) NOT NULL DEFAULT 0,
   `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `verifyToken` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1839,7 +1927,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `status`, `email`, `password`, `verifyToken`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Amos', 1, 'amoschihi@gmail.com', '$2y$10$jTL9/Jw9QvBgCZnNz/LWDOwtDl1CqWWYC7rnd2USDW5FiKQqW/ttW', NULL, 'bywLqhnLw0SVFAWX1x7WestwnuGPDysuvS8e7psKy8Xj5ePrGUVViSQLEpS2', '2018-07-19 12:24:59', '2018-07-19 12:26:31'),
+(1, 'Amos', 1, 'amoschihi@gmail.com', '$2y$10$jTL9/Jw9QvBgCZnNz/LWDOwtDl1CqWWYC7rnd2USDW5FiKQqW/ttW', NULL, 'wiVNaipvhLXeR1Sah3ZIIJQFxwnvW6jNk4UB5BRb3xfKXPQSSomz6HrLuOAw', '2018-07-19 12:24:59', '2018-07-19 12:26:31'),
 (2, 'code doctor', 1, 'amoschihi@yahoo.com', '$2y$10$F4mJkyJHNk33H/Iho6Mkre9diwlGJnngyL/3TxP47ONX47EzRpAry', NULL, NULL, '2018-07-19 12:27:58', '2018-07-19 12:33:23');
 
 -- --------------------------------------------------------
@@ -2213,7 +2301,7 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `admin_roles`
 --
 ALTER TABLE `admin_roles`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `admission_types`
@@ -2267,7 +2355,7 @@ ALTER TABLE `fees`
 -- AUTO_INCREMENT for table `fee_finance_details`
 --
 ALTER TABLE `fee_finance_details`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `icons`
@@ -2291,19 +2379,19 @@ ALTER TABLE `levels`
 -- AUTO_INCREMENT for table `marks`
 --
 ALTER TABLE `marks`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `menus`
 --
 ALTER TABLE `menus`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `menu_roles`
 --
 ALTER TABLE `menu_roles`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -2327,31 +2415,31 @@ ALTER TABLE `parents`
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `payment_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `payment_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `programs`
 --
 ALTER TABLE `programs`
-  MODIFY `program_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `program_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `receipts`
 --
 ALTER TABLE `receipts`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `receipt_details`
 --
 ALTER TABLE `receipt_details`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `schools`
@@ -2393,7 +2481,7 @@ ALTER TABLE `students`
 -- AUTO_INCREMENT for table `submenus`
 --
 ALTER TABLE `submenus`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `terms`
@@ -2405,19 +2493,19 @@ ALTER TABLE `terms`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `transaction_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `transaction_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `units`
 --
 ALTER TABLE `units`
-  MODIFY `unit_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `unit_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `unit_registereds`
 --
 ALTER TABLE `unit_registereds`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -2510,94 +2598,6 @@ ALTER TABLE `marks`
 --
 ALTER TABLE `menus`
   ADD CONSTRAINT `menus_icon_id_foreign` FOREIGN KEY (`icon_id`) REFERENCES `icons` (`id`);
-
---
--- Constraints for table `payments`
---
-ALTER TABLE `payments`
-  ADD CONSTRAINT `payments_fee_finance_detail_id_foreign` FOREIGN KEY (`fee_finance_detail_id`) REFERENCES `fee_finance_details` (`id`),
-  ADD CONSTRAINT `payments_level_id_foreign` FOREIGN KEY (`level_id`) REFERENCES `levels` (`level_id`),
-  ADD CONSTRAINT `payments_student_id_foreign` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`);
-
---
--- Constraints for table `programs`
---
-ALTER TABLE `programs`
-  ADD CONSTRAINT `programs_academic_id_foreign` FOREIGN KEY (`academic_id`) REFERENCES `academics` (`academic_id`),
-  ADD CONSTRAINT `programs_admissiontype_id_foreign` FOREIGN KEY (`admissiontype_id`) REFERENCES `admission_types` (`admissiontype_id`),
-  ADD CONSTRAINT `programs_course_id_foreign` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`),
-  ADD CONSTRAINT `programs_level_id_foreign` FOREIGN KEY (`level_id`) REFERENCES `levels` (`level_id`);
-
---
--- Constraints for table `receipt_details`
---
-ALTER TABLE `receipt_details`
-  ADD CONSTRAINT `receipt_details_receipt_id_foreign` FOREIGN KEY (`receipt_id`) REFERENCES `receipts` (`id`),
-  ADD CONSTRAINT `receipt_details_student_id_foreign` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`),
-  ADD CONSTRAINT `receipt_details_transaction_id_foreign` FOREIGN KEY (`transaction_id`) REFERENCES `transactions` (`transaction_id`);
-
---
--- Constraints for table `schools`
---
-ALTER TABLE `schools`
-  ADD CONSTRAINT `schools_college_id_foreign` FOREIGN KEY (`college_id`) REFERENCES `colleges` (`college_id`);
-
---
--- Constraints for table `staff`
---
-ALTER TABLE `staff`
-  ADD CONSTRAINT `staff_department_id_foreign` FOREIGN KEY (`department_id`) REFERENCES `departments` (`department_id`);
-
---
--- Constraints for table `statuses`
---
-ALTER TABLE `statuses`
-  ADD CONSTRAINT `statuses_program_id_foreign` FOREIGN KEY (`program_id`) REFERENCES `programs` (`program_id`),
-  ADD CONSTRAINT `statuses_student_id_foreign` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`);
-
---
--- Constraints for table `students`
---
-ALTER TABLE `students`
-  ADD CONSTRAINT `students_agent_id_foreign` FOREIGN KEY (`agent_id`) REFERENCES `agents` (`id`),
-  ADD CONSTRAINT `students_parent_id_foreign` FOREIGN KEY (`parent_id`) REFERENCES `parents` (`parent_id`),
-  ADD CONSTRAINT `students_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `admins` (`id`);
-
---
--- Constraints for table `submenus`
---
-ALTER TABLE `submenus`
-  ADD CONSTRAINT `submenus_icon_id_foreign` FOREIGN KEY (`icon_id`) REFERENCES `icons` (`id`),
-  ADD CONSTRAINT `submenus_menu_id_foreign` FOREIGN KEY (`menu_id`) REFERENCES `menus` (`id`);
-
---
--- Constraints for table `transactions`
---
-ALTER TABLE `transactions`
-  ADD CONSTRAINT `transactions_fee_finance_detail_id_foreign` FOREIGN KEY (`fee_finance_detail_id`) REFERENCES `fee_finance_details` (`id`),
-  ADD CONSTRAINT `transactions_payment_id_foreign` FOREIGN KEY (`payment_id`) REFERENCES `payments` (`payment_id`),
-  ADD CONSTRAINT `transactions_student_id_foreign` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`),
-  ADD CONSTRAINT `transactions_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `admins` (`id`);
-
---
--- Constraints for table `units`
---
-ALTER TABLE `units`
-  ADD CONSTRAINT `units_course_id_foreign` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`),
-  ADD CONSTRAINT `units_level_id_foreign` FOREIGN KEY (`level_id`) REFERENCES `levels` (`level_id`);
-
---
--- Constraints for table `unit_registereds`
---
-ALTER TABLE `unit_registereds`
-  ADD CONSTRAINT `unit_registereds_academic_id_foreign` FOREIGN KEY (`academic_id`) REFERENCES `academics` (`academic_id`),
-  ADD CONSTRAINT `unit_registereds_college_id_foreign` FOREIGN KEY (`college_id`) REFERENCES `colleges` (`college_id`),
-  ADD CONSTRAINT `unit_registereds_course_id_foreign` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`),
-  ADD CONSTRAINT `unit_registereds_lecturer_id_foreign` FOREIGN KEY (`lecturer_id`) REFERENCES `lecturers` (`lecturer_id`),
-  ADD CONSTRAINT `unit_registereds_level_id_foreign` FOREIGN KEY (`level_id`) REFERENCES `levels` (`level_id`),
-  ADD CONSTRAINT `unit_registereds_mode_id_foreign` FOREIGN KEY (`mode_id`) REFERENCES `modes` (`mode_id`),
-  ADD CONSTRAINT `unit_registereds_student_id_foreign` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`),
-  ADD CONSTRAINT `unit_registereds_term_id_foreign` FOREIGN KEY (`term_id`) REFERENCES `terms` (`term_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

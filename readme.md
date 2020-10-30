@@ -7,7 +7,7 @@ HOW TO USE THIS APPLICATION
 - While composer installed in your system, Open your CLI to download the composer dependancies:- <code>composer install</code>		
 - Open the .env file and Configure your database & Mail support
 
-		If you are importing database (lincoln.sql), you may skip step 3
+		If you are importing database (data/4s.sql), you may skip step 3
 
 # Step 3
 - Open the AppServiceProvider.php (Located at App\Providers) and comment this line at the boot function; <code>self::globalVals(1);</code>
