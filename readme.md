@@ -25,5 +25,6 @@ You can now loggin as follows;
 	i) Instructor - {username=code doctor, password=lincoln}
 	ii) Super Admin - {username=amos, password=lincoln}
 	iii) Student - {username=amos, password=lincoln}
+    iv) Finance Officer - {username=chihi, password=lincoln}
 
 	NB: All menus are managed by the Super Admin, if you have any issue log in as Super Admin to rectify.
