@@ -15,7 +15,7 @@
     </a>
     <ul class="sub">
       @foreach ($submenus->where('menu_id',$menus->id) as $menu)
-      <li><a href="/{{ $menu->link }}"><i class="{{ $menu->icon->icon_path }}"></i>{{ $menu->menu_name }}</a></li>
+      <li><a href="/{{ $menu->link }}"><i class="{{ $menu->icon->icon_path ?? null }}"></i>{{ $menu->menu_name }}</a></li>
       @endforeach
     </ul>
   </li>

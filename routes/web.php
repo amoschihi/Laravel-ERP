@@ -1,5 +1,8 @@
 <?php
 
+use App\Account;
+use App\LedgerHelper;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -149,6 +152,50 @@ Route::get('verify/{email}/{verifyToken}','Auth\RegisterController@sendEmailDone
 //Agent routes
 Route::get('agent/login','Agent\AgentController@showLoginForm')->name('agent.login');
 Route::get('admin/messaging','AdminController@message');
+
+//Ledger Entries
+Route::group([
+	'middleware' => ['auth:admin','finance','locked'],
+	'as'=>'Ledger::',
+	'prefix'=>'admin/ledger_entries/{account}',
+	], function($account) use ($router){ // implicit binding for account
+
+		// bind account to Model\Account
+		$router->model('account', Account::class);
+		Route::get('', function($account){
+			
+			$stats = LedgerHelper::accountStats($account);
+
+			if(Request::ajax()){
+				return $stats;
+			}
+
+			view()->addLocation(__DIR__ . '/views');
+
+			return view('finance.ledger', compact('account', 'stats'));
+		});
+
+		Route::post('', function($account){
+			$transaction = LedgerHelper::record(Request::all(), $account);
+
+			if(isset($transaction['error']))
+				return $transaction;
+
+			return LedgerHelper::accountStats($account);
+		});
+
+		Route::get('summary', function($account){
+			return LedgerHelper::summary($account);
+		});
+
+		Route::get('transactions', function($account){
+			return LedgerHelper::transactions($account);
+		});		
+
+		Route::get('accountStats', function($account){
+			return LedgerHelper::accountStats($account);
+		});
+});
 
 
 //Student portal routes

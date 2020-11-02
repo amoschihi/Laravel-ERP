@@ -50,10 +50,21 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <button title="Toggle sidebar" data-toggle="tooltip" data-placement="bottom" type="button" id="sidebarCollapse" class="btn btn-info btn-flat navbar-btn"><b class="lx"><i class="fa fa-arrow-left"></i></b><b class="mx"><i class="fa fa-arrow-right"></i></b>
+        <button title="Toggle sidebar" data-toggle="tooltip" data-placement="bottom" type="button" 
+                id="sidebarCollapse" class="btn btn-info btn-flat navbar-btn">
+                <b class="lx"><i class="fa fa-arrow-left"></i></b>
+                <b class="mx"><i class="fa fa-arrow-right"></i></b>
         </button>
-        <a class="navbar-brand lx" href="{{ session('whoIsLoggedIn')=='instructor'?url('/admin'):url('admin/home') }}"><img src="{{ asset('storage/img/'.$app->logo) }}"></a>
-        <a class="navbar-brand mx" href="{{ session('whoIsLoggedIn')=='instructor'?url('/admin'):url('admin/home') }}"> @php preg_match_all("/(?<=\s|^)[a-z]/i", $app->appname, $matches ); @endphp {{ strtoupper(implode('',$matches[0])) }} </a>
+        <a class="navbar-brand lx" 
+            href="{{ session('whoIsLoggedIn')=='instructor'?url('/admin'):
+            (session('whoIsLoggedIn')=='finance'?url('admin/dashboard'):url('admin/home')) }}">
+            <img src="{{ asset('storage/img/'.$app->logo) }}"></a>
+        <a class="navbar-brand mx" 
+            href="{{ session('whoIsLoggedIn')=='instructor'?url('/admin'):
+            (session('whoIsLoggedIn')=='finance'?url('admin/dashboard'):url('admin/home')) }}">
+            @php preg_match_all("/(?<=\s|^)[a-z]/i", $app->appname, $matches ); @endphp 
+            {{ strtoupper(implode('',$matches[0])) }} 
+        </a>
         {{-- <a class="navbar-brand lx" href="{{ url('/admin') }}"><strong>{{strtoupper($app->appname)}}</strong></a> --}}
       </div>
       <!-- /.navbar-header -->

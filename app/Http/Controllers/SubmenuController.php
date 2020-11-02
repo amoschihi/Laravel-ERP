@@ -53,12 +53,12 @@ class SubmenuController extends Controller
         //
         if ($request->role=='student' || $request->role=='class rep') {
             $link = Str::lower(Str::slug($request->menu_name,'_'));
-        }elseif($request->role=='admin' || $request->role=='instructor') {
+        }elseif($request->role=='admin' || $request->role=='instructor' || $request->role=='finance') {
             $link = Str::lower('admin/'.Str::slug($request->menu_name,'_'));
         }elseif($request->role=='agent') {
             $link = Str::lower('agent/'.Str::slug($request->menu_name,'_'));
         }else {
-            $link = null;
+            $link = 'NotFound';
         }
         Submenu::create([
             'menu_id'=>$request->menu_id,

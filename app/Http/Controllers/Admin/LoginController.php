@@ -70,7 +70,7 @@ class LoginController extends Controller
         $this->clearLoginAttempts($request);
 
         $roles = $this->guard()->user()->role;
-
+        
         foreach ($roles as $role) {
 
             if($roles->count() > 1 ) {
@@ -80,6 +80,14 @@ class LoginController extends Controller
 
             return $this->validateRedirect($role->name);
         }
+    }
+    /**
+     * Overide login username to use 'name'
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function username() {
+        return 'name';
     }
     /**
      * Get the role center form data.
