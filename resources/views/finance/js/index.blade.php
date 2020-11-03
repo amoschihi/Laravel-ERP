@@ -2,14 +2,14 @@
 <script src="{{ asset('js/moment.js') }}"></script>
 
 <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/datatables/1.10.11/js/dataTables.bootstrap.min.js"></script>
+<script src="{{ asset('js/dataTables.bootstrap.min.js') }}"></script>
 
 <!-- datatables responsive extension -->
-<script src="//cdn.datatables.net/responsive/2.0.2/js/dataTables.responsive.min.js"></script>
+<script src="{{ asset('js/dataTables.responsive.min.js') }}"></script>
 
 <!-- buttons for datatables -->
 <script src="{{ asset('js/dataTables.buttons.min.js') }}"></script>
-<script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.flash.min.js"></script>
+<script src="{{ asset('js/buttons.flash.min.js') }}"></script>
 <script src="{{ asset('js/jszip.min.js') }}"></script>
 <script src="{{ asset('js/pdfmake.min.js') }}"></script>
 <script src="{{ asset('js/vfs_fonts.js') }}"></script>

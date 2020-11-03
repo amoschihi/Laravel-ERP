@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Role;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,20 +20,13 @@ class RedirectIfAuthenticated
     {
         switch ($guard) {
             case 'admin':
-                if (Auth::guard($guard)->check())
-                    {
-                        
-                        if(session('whoIsLoggedIn')=='admin') {
-                            return redirect('admin/home');
-                        }elseif(session('whoIsLoggedIn') == 'finance') {
-                            return redirect('admin/dashboard');
-                        }elseif(session('whoIsLoggedIn') == 'instructor') {
-                            return redirect('admin');
-                        }else{
-                            return redirect('/');
+                if (Auth::guard($guard)->check()) {
+                    foreach(Role::all() as $rl) {
+                        if(session('whoIsLoggedIn') == $rl->name) {
+                            return redirect($rl->redirect);
                         }
-                        
                     }
+                }
                 break;
             
             default:

@@ -20,7 +20,7 @@
                         {{ csrf_field() }}
 
                         <div class="form-group">
-                            <label class="strong">Oh hey, we have noticed you have several roles. Which role center do you want to login to? Choose one below.</label>
+                            <label class="strong">Oh hey {{ $name }}, we have noticed you have several roles. Which role center do you want to login to? Choose one below.</label>
                         </div>
 
                         <div class="form-group{{ $errors->has('role') ? ' has-error' : '' }}">

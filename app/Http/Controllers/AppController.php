@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class AppController extends Controller
 {
-    //
-    // $app = Setting::all();
-    // return view('/',['app',$app]);
+    public function App() {
+        return view('welcome');
+    }
 }

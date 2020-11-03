@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Role;
+use App\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -49,12 +51,11 @@ class LoginController extends Controller
     protected function validateRedirect($role)
     {
         session(['whoIsLoggedIn' => $role]);
-        if ($role == 'admin') {
-            return redirect('admin/home');
-        }elseif ($role == 'instructor') {
-            return redirect('admin');
-        }elseif($role == 'finance') {
-            return redirect('admin/dashboard');
+
+        foreach(Role::all() as $rl) {
+            if($role == $rl->name) {
+                return \redirect($rl->redirect);
+            }
         }
     }
     /**
@@ -90,6 +91,17 @@ class LoginController extends Controller
         return 'name';
     }
     /**
+     * Show role center form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRoleCenterForm(Admin $user) {
+        $roles = $user->role; 
+        $name = $user->name;
+	    return view('admin.role', compact('roles','name'));
+    }
+
+    /**
      * Get the role center form data.
      *
      * @return \Illuminate\Http\Response
@@ -100,6 +112,7 @@ class LoginController extends Controller
         ]);
         return $this->validateRedirect($request->role);
     }
+
     /**
      * Show the application's login form.
      *

@@ -1,8 +1,5 @@
 <?php
 
-use App\Account;
-use App\LedgerHelper;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,14 +10,15 @@ use App\LedgerHelper;
 | contains the "web" middleware group. Now create something great!
 |
 */
-// Route::get('/', 'ApplicantController@home');
+Route::get('/', 'AppController@App');
 
-Route::get('/', function() {
-	return view('welcome');
+Route::group([
+	'prefix' => 'notification'
+], function() {
+	Route::post('get','NotificationController@get');
+	Route::post('read','NotificationController@read');
+	Route::post('send','NotificationController@send');
 });
-Route::post('notification/get','NotificationController@get');
-Route::post('notification/read','NotificationController@read');
-Route::post('notification/send','NotificationController@send');
 
 //Resources
 Route::middleware(['locked'])->group(function () {
@@ -127,10 +125,7 @@ Route::get('admin/dashboard', 'Admin\FinanceController@index');
 Route::get('admin', 'InstructorController@index');
 Route::get('admin/login', 'Admin\LoginController@showLoginForm')->name('admin.login');
 Route::post('admin/login', 'Admin\LoginController@login');
-Route::get('admin/{user}/role', function(App\Admin $user){
-	$roles = $user->role;
-	return view('admin.role', compact('roles'));
-});
+Route::get('admin/{user}/role', 'Admin\LoginController@showRoleCenterForm');
 Route::post('admin/role', 'Admin\LoginController@role')->name('admin.role');
 Route::post('admin/password/email','Admin\ForgotPasswordController@sendResetLinkEmail')->name('admin.password.email');
 Route::get('admin/password/reset', 'Admin\ForgotPasswordController@showLinkRequestForm')->name('admin.password.request');
@@ -142,7 +137,6 @@ Route::get('admin/comments','Admin\AdminController@showComments');
 Route::get('admin/view/comments/{comment_id}','Admin\AdminController@showComments')->name('admin.comment');
 Route::post('admin/load/comments','Admin\AdminController@fetchComments')->name('fetchComments');
 Route::post('admin/insert/comments','Admin\AdminController@insertComment')->name('insertComment');
-// Route::get('admin/contact','Admin\AdminController@showContactForm')->name('admin.contact');
 Route::get('admin/about','Admin\AdminController@showAboutForm');
 Route::get('admin/change_password','Admin\ChangePasswordController@showChangeForm');
 
@@ -158,43 +152,12 @@ Route::group([
 	'middleware' => ['auth:admin','finance','locked'],
 	'as'=>'Ledger::',
 	'prefix'=>'admin/ledger_entries/{account}',
-	], function($account) use ($router){ // implicit binding for account
-
-		// bind account to Model\Account
-		$router->model('account', Account::class);
-		Route::get('', function($account){
-			
-			$stats = LedgerHelper::accountStats($account);
-
-			if(Request::ajax()){
-				return $stats;
-			}
-
-			view()->addLocation(__DIR__ . '/views');
-
-			return view('finance.ledger', compact('account', 'stats'));
-		});
-
-		Route::post('', function($account){
-			$transaction = LedgerHelper::record(Request::all(), $account);
-
-			if(isset($transaction['error']))
-				return $transaction;
-
-			return LedgerHelper::accountStats($account);
-		});
-
-		Route::get('summary', function($account){
-			return LedgerHelper::summary($account);
-		});
-
-		Route::get('transactions', function($account){
-			return LedgerHelper::transactions($account);
-		});		
-
-		Route::get('accountStats', function($account){
-			return LedgerHelper::accountStats($account);
-		});
+], function() { 
+		Route::get('', 'LedgerController@showLedger');
+		Route::post('', 'LedgerController@stats');
+		Route::get('summary', 'LedgerController@summary');
+		Route::get('transactions', 'LedgerController@transactions');		
+		Route::get('accountStats', 'LedgerController@getStats');
 });
 
 

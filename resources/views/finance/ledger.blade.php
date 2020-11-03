@@ -6,13 +6,13 @@
 </ol>
 @endsection
 @push('head')
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/red/pace-theme-minimal.css">
+<link rel="stylesheet" href="{{ asset('css/pace-theme-minimal.css') }} ">
 <!-- morris -->
 <link rel="stylesheet" href="{{ asset('css/morris.css') }}">
 
-<link href="//cdnjs.cloudflare.com/ajax/libs/datatables/1.10.11/css/dataTables.bootstrap.min.css" rel="stylesheet">
+<link href="{{ asset('css/dataTables.bootstrap.min.css') }} " rel="stylesheet">
 <link href="{{ asset('css/buttons.dataTables.min.css') }}" rel="stylesheet">
-<link href="//cdn.datatables.net/responsive/2.0.2/css/responsive.dataTables.min.css" rel="stylesheet">
+<link href="{{ asset('css/responsive.dataTables.min.css') }} " rel="stylesheet">
 
 <style type="text/css">
 #table-ledger_length{
@@ -57,10 +57,10 @@ button, .btn:focus, .btn:focus:active, .paginate_button a:focus, .paginate_butto
 
 @push('bottom')
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     
-    <script src="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
+    <script src="{{ asset('js/pace.min.js') }}"></script>
 <script type="text/javascript">
   // display pace on ajax start
   $(document).ajaxStart(function() { Pace.restart(); });
