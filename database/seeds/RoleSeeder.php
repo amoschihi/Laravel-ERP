@@ -14,10 +14,10 @@ class RoleSeeder extends Seeder
     {
         //
         role::insert([
-        	['name'=>'admin'],
-            ['name'=>'instructor'],
-            ['name'=>'student'],
-            ['name'=>'finance']
+        	['name'=>'admin', 'redirect'=>'admin/home'],
+            ['name'=>'instructor', 'redirect'=>'admin'],
+            ['name'=>'student', 'redirect'=>'home'],
+            ['name'=>'finance', 'redirect'=>'admin/dashboard']
         ]);
     }
 }
